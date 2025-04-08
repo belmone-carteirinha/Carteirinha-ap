@@ -29,6 +29,16 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
 largura = 85.6 * mm
 altura = 53.98 * mm  # Padrão internacional de cartão ID
 
+if imagem_fundo:
+        fundo_path = "fundo_temp.jpg"
+        with open(fundo_path, "wb") as f:
+            f.write(imagem_fundo.read())
+        c.drawImage(fundo_path, 0, 0, width=largura, height=altura)
+        os.remove(fundo_path)
+    else:
+        c.setFillColorRGB(0.8, 1, 0.8)
+        c.rect(0, 0, largura, altura, fill=True, stroke=False)
+
 c = canvas.Canvas(buffer, pagesize=(largura, altura))
 
     c.setFillColorRGB(0.8, 1, 0.8)
