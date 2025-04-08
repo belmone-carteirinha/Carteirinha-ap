@@ -33,7 +33,7 @@ if imagem_fundo:
             f.write(imagem_fundo.read())
         c.drawImage(fundo_path, 0, 0, width=largura, height=altura)
         os.remove(fundo_path)
-    else:
+else:
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
