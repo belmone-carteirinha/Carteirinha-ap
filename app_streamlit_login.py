@@ -23,24 +23,21 @@ def gerar_qrcode(dados):
     img = qr.make_image(fill_color="black", back_color="white")
     return img
 
-pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto, logotipo, imagem_fundo)
-largura = 85.6 * mm
-altura = 53.98 * mm  # Padrão internacional de cartão ID
+def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_fundo=None):
+    buffer = io.BytesIO()
+    largura, altura = 85.6 * mm, 53.98 * mm
+    c = canvas.Canvas("carteirinha.pdf", pagesize=(largura, altura))
 
-if imagem_fundo:
-        fundo_path = "fundo_temp.jpg"
-        with open(fundo_path, "wb") as f:
+    # Adicionar imagem de fundo (se fornecida)
+    if imagem_fundo:
+        caminho_fundo = "fundo_temp.jpg"
+        with open(caminho_fundo, "wb") as f:
             f.write(imagem_fundo.read())
-        c.drawImage(fundo_path, 0, 0, width=largura, height=altura)
-        os.remove(fundo_path)
-else:
+        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
+        os.remove(caminho_fundo)
+    else:
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
-
-c = canvas.Canvas(buffer, pagesize=(largura, altura))
-
-    c.setFillColorRGB(0.8, 1, 0.8)
-    c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
     if foto:
         caminho_foto = "foto_temp.jpg"
@@ -78,7 +75,7 @@ c = canvas.Canvas(buffer, pagesize=(largura, altura))
     c.save()
     buffer.seek(0)
     return buffer
-
+    
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
