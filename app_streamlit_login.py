@@ -1,4 +1,4 @@
-76import streamlit as st
+import streamlit as st
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 import qrcode
