@@ -72,6 +72,7 @@ if not st.session_state.autenticado:
     usuario = st.text_input("Usuário")
     senha = st.text_input("Senha", type="password")
 if st.button("Entrar"):
+
     if usuario in USUARIOS and USUARIOS[usuario] == senha:
         st.session_state.autenticado = True
         st.experimental_rerun()
@@ -86,7 +87,6 @@ else:
     validade = st.date_input("Validade")
 
     foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
-    logotipo = st.file_uploader("Logotipo da instituição (opcional)", type=["jpg", "jpeg", "png"])
 
     if st.button("Gerar Carteirinha"):
         if nome and curso and matricula and validade and foto:
