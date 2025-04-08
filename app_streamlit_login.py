@@ -1,4 +1,4 @@
-import streamlit as st
+iimport streamlit as st
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 import qrcode
@@ -83,10 +83,10 @@ if not st.session_state.get("autenticado", False):
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
         if st.button("Entrar"):
-            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-                st.session_state.autenticado = True
-                st.success("Login realizado com sucesso!")
-                st.experimental_rerun()
+if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+    st.session_state.autenticado = True
+    st.success("Login realizado com sucesso!")
+    st.stop()
             else:
                 st.error("Usuário ou senha incorretos")
 
