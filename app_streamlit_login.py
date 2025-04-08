@@ -20,10 +20,11 @@ def gerar_qrcode(dados):
 
 def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
     buffer = io.BytesIO()
-    largura = 85.6 * mm
-    altura = 53.98 * mm
-    c = canvas.Canvas("carteirinha.pdf", pagesize=(largura, altura))
 
+largura = 85.6 * mm
+altura = 53.98 * mm
+
+c = canvas.Canvas(buffer, pagesize=(largura, altura))
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
