@@ -23,10 +23,13 @@ def gerar_qrcode(dados):
     img = qr.make_image(fill_color="black", back_color="white")
     return img
 
-def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
+def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_fundo):
     buffer = io.BytesIO()
-    largura, altura = 85.6 * mm, 53.98 * mm
-    c = canvas.Canvas("carteirinha.pdf", pagesize=(largura, altura))
+
+largura = 85.6 * mm
+altura = 53.98 * mm  # Padrão internacional de cartão ID
+
+c = canvas.Canvas(buffer, pagesize=(largura, altura))
 
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
@@ -107,6 +110,7 @@ else:
 
     foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
     logotipo = st.file_uploader("Logotipo da instituição (opcional)", type=["jpg", "jpeg", "png"])
+    imagem_fundo = st.file_uploader("Imagem de fundo da carteirinha (opcional)", type=["jpg", "jpeg", "png"])
 
     if st.button("Gerar Carteirinha"):
         if nome and curso and matricula and validade and foto:
