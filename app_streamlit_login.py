@@ -77,7 +77,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
-    c.drawImage(qr_path, largura - 25 * mm, 5 * mm, width=20 * mm, height=20 * mm)
+    c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
     os.remove(qr_path)
 
     c.save()
