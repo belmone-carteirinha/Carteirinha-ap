@@ -89,7 +89,7 @@ if not st.session_state.autenticado:
     st.title("🔐 Login")
     menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
 
-    if menu == "Login":
+if menu == "Login":
     usuario = st.text_input("Usuário")
     senha = st.text_input("Senha", type="password")
 
