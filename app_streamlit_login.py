@@ -27,24 +27,24 @@ def gerar_qrcode(dados):
 
 # Função para gerar carteirinha com imagem de fundo
 def gerar_carteirinha(nome, curso, matricula, nascimento, dias_aula, validade, foto, logotipo):
+def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_fundo):
     buffer = io.BytesIO()
-    c = canvas.Canvas("carteirinha.pdf", pagesize=(85.6 * mm, 53.98 * mm))
     largura, altura = 85.6 * mm, 53.98 * mm
+    c = canvas.Canvas(buffer, pagesize=(largura, altura))
 
-    fundo = ImageReader("fundo_carteirinha.png")
-    c.drawImage(fundo, 0, 0, width=largura, height=altura)
-
-    # Adiciona imagem de fundo se fornecida
+    # Adiciona imagem de fundo se existir
     if imagem_fundo:
-        fundo_path = "fundo_temp.png"
-        with open(fundo_path, "wb") as f:
+        caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
+        with open(caminho_fundo, "wb") as f:
             f.write(imagem_fundo.read())
-        c.drawImage(fundo_path, 0, 0, width=largura, height=altura)
-        os.remove(fundo_path)
+        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
+        os.remove(caminho_fundo)
     else:
-        # Fundo verde claro padrão
+        # Fundo padrão
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
+
+    # Continuação da função...
 
     # Adiciona a foto do aluno
     if foto:
