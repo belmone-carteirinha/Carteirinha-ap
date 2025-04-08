@@ -19,8 +19,9 @@ def gerar_qrcode(dados):
     return img
 
 def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
+    
     buffer = io.BytesIO()
-
+    
 largura = 85.6 * mm
 altura = 53.98 * mm
 
