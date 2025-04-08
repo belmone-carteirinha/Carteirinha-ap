@@ -1,5 +1,4 @@
 import streamlit as st
-from reportlab.lib.pagesizes import IDCARD
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 import qrcode
@@ -21,8 +20,8 @@ def gerar_qrcode(dados):
 
 def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
     buffer = io.BytesIO()
-    c = canvas.Canvas(buffer, pagesize=IDCARD)
-    largura, altura = IDCARD
+    
+   c = canvas.Canvas("carteirinha.pdf", pagesize=(85.6 * mm 
 
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
