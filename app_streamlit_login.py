@@ -87,8 +87,8 @@ if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] =
     st.session_state.autenticado = True
     st.success("Login realizado com sucesso!")
     st.stop()
-            else:
-                st.error("Usuário ou senha incorretos")
+else: 
+    st.error("Usuário ou senha incorretos")
 
     elif menu == "Cadastrar novo usuário":
         novo_usuario = st.text_input("Novo usuário")
