@@ -90,6 +90,7 @@ else:
     validade = st.date_input("Validade")
 
     foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
+    logotipo = st.file_uploader("Logotipo da instituição (opcional)", type=["jpg", "jpeg", "png"]) or None
 
     if st.button("Gerar Carteirinha"):
         if nome and curso and matricula and validade and foto:
