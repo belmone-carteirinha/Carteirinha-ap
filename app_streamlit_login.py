@@ -26,7 +26,7 @@ def gerar_qrcode(dados):
     return qr.make_image(fill_color="black", back_color="white")
 
 # Função para gerar carteirinha com imagem de fundo
-def gerar_carteirinha(...):
+def gerar_carteirinha(nome, curso, matricula, nascimento, dias_aula, validade, foto, logotipo):
     buffer = io.BytesIO()
     c = canvas.Canvas("carteirinha.pdf", pagesize=(85.6 * mm, 53.98 * mm))
     largura, altura = 85.6 * mm, 53.98 * mm
