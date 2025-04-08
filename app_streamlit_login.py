@@ -72,10 +72,9 @@ if not st.session_state.autenticado:
     usuario = st.text_input("Usuário")
     senha = st.text_input("Senha", type="password")
     if st.button("Entrar"):
-        if usuario in USUARIOS and USUARIOS[usuario] == senha:
-            st.session_state.autenticado = True
-            st.success("Login realizado com sucesso!")
-            st.rerun()
+    if usuario in USUARIOS and USUARIOS[usuario] == senha:
+    st.session_state.autenticado = True
+    st.experimental_rerun()
         else:
             st.error("Usuário ou senha incorretos")
 else:
