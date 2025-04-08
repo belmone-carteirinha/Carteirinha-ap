@@ -33,8 +33,7 @@ def gerar_carteirinha(...):
 
     fundo = ImageReader("fundo_carteirinha.png")
     c.drawImage(fundo, 0, 0, width=largura, height=altura)
-    
-    # Aqui continuam os outros elementos como foto, QR Code, textos...
+
     # Adiciona imagem de fundo se fornecida
     if imagem_fundo:
         fundo_path = "fundo_temp.png"
