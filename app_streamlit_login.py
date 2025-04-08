@@ -20,8 +20,9 @@ def gerar_qrcode(dados):
 
 def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
     buffer = io.BytesIO()
-    largura, altura = (85.6 * mm, 53.98 * mm)
-    c = canvas.Canvas(buffer, pagesize=(largura, altura))
+    largura = 85.6 * mm
+    altura = 53.98 * mm
+    c = canvas.Canvas("carteirinha.pdf", pagesize=(largura, altura))
 
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
@@ -74,7 +75,7 @@ if not st.session_state.autenticado:
         if usuario in USUARIOS and USUARIOS[usuario] == senha:
             st.session_state.autenticado = True
             st.success("Login realizado com sucesso!")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("Usuário ou senha incorretos")
 else:
