@@ -93,13 +93,16 @@ if not st.session_state.autenticado:
     menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
 
     if menu == "Login":
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
-        if st.button("Entrar"):
-            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-    st.session_state.autenticado = True
-    st.success("Login realizado com sucesso!")
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+
+    if st.button("Entrar"):
+        if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+            st.session_state.autenticado = True
+            st.success("Login realizado com sucesso!")
+            st.experimental_rerun()
+        else:
+            st.error("Usuário ou senha incorretos")
     st.stop()
     
     else:
