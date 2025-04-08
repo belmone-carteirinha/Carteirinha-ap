@@ -21,17 +21,15 @@ def gerar_qrcode(dados):
     img = qr.make_image(fill_color="black", back_color="white")
     return img
 
-def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
+def gerar_carteirinha(...):
     buffer = io.BytesIO()
+    c = canvas.Canvas("carteirinha.pdf", pagesize=(85.6 * mm, 53.98 * mm))
+    largura, altura = 85.6 * mm, 53.98 * mm
 
-    largura = 85.6 * mm
-    altura = 53.98 * mm
-
-    c = canvas.Canvas(buffer, pagesize=(largura, altura))
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-if foto:
+    if foto:
         caminho_foto = "foto_temp.jpg"
         with open(caminho_foto, "wb") as f:
             f.write(foto.read())
@@ -39,7 +37,7 @@ if foto:
         os.remove(caminho_foto)
 
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
-    qr_img = gerar_qrcode(dados_qr)
+    ...
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
     c.drawImage(qr_path, largura - 25 * mm, 5 * mm, width=20 * mm, height=20 * mm)
