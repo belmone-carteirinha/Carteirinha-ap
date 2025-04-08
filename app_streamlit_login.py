@@ -89,7 +89,6 @@ if not st.session_state.get("autenticado", False):
         if st.button("Entrar"):
             if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
                 st.session_state.autenticado = True
-                st.success("Login realizado com sucesso!")
                 st.experimental_rerun()
             else:
                 st.error("Usuário ou senha incorretos")
@@ -105,3 +104,24 @@ if not st.session_state.get("autenticado", False):
                 st.success("Usuário cadastrado com sucesso!")
             else:
                 st.error("Preencha todos os campos.")
+
+# ----------------------------
+# INTERFACE PRINCIPAL APÓS LOGIN
+# ----------------------------
+else:
+    st.title("🎓 Gerador de Carteirinha Estudantil")
+
+    nome = st.text_input("Nome completo")
+    curso = st.text_input("Curso")
+    matricula = st.text_input("Matrícula")
+    validade = st.date_input("Validade")
+
+    foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
+    logotipo = st.file_uploader("Logotipo da instituição", type=["jpg", "jpeg", "png"])
+    
+    if st.button("Gerar Carteirinha"):
+        if nome and curso and matricula and validade and foto:
+            pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto, logotipo)
+            st.download_button("📥 Baixar Carteirinha (PDF)", data=pdf, file_name="carteirinha.pdf", mime="application/pdf")
+        else:
+            st.error("Preencha todos os campos obrigatórios.")
