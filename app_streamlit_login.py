@@ -23,8 +23,7 @@ def gerar_qrcode(dados):
     img = qr.make_image(fill_color="black", back_color="white")
     return img
 
-def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_fundo):
-    buffer = io.BytesIO()
+def = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto, logotipo, imagem_fundo)
 
 largura = 85.6 * mm
 altura = 53.98 * mm  # Padrão internacional de cartão ID
