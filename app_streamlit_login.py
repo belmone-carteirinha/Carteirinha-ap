@@ -11,6 +11,9 @@ USUARIOS = {
     "adriel": "senha123"
 }
 
+if "usuarios" not in st.session_state:
+    st.session_state.usuarios = USUARIOS.copy()
+
 def gerar_qrcode(dados):
     qr = qrcode.QRCode(box_size=2, border=2)
     qr.add_data(dados)
