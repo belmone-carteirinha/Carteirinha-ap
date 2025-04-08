@@ -19,13 +19,12 @@ def gerar_qrcode(dados):
     return img
 
 def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
-    
     buffer = io.BytesIO()
-    
-largura = 85.6 * mm
-altura = 53.98 * mm
 
-c = canvas.Canvas(buffer, pagesize=(largura, altura))
+    largura = 85.6 * mm
+    altura = 53.98 * mm
+
+    c = canvas.Canvas(buffer, pagesize=(largura, altura))
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
@@ -58,7 +57,9 @@ c = canvas.Canvas(buffer, pagesize=(largura, altura))
         logo_height = 15 * mm
         x_central = (largura - logo_width) / 2
         y_base = 5 * mm
+        # Central
         c.drawImage(caminho_logo, x_central, y_base, width=logo_width, height=logo_height)
+        # Esquerda
         c.drawImage(caminho_logo, 5 * mm, y_base, width=logo_width, height=logo_height)
         os.remove(caminho_logo)
 
