@@ -71,13 +71,13 @@ if not st.session_state.autenticado:
     st.title("🔐 Login")
     usuario = st.text_input("Usuário")
     senha = st.text_input("Senha", type="password")
-if st.button("Entrar"):
-
-    if usuario in USUARIOS and USUARIOS[usuario] == senha:
-        st.session_state.autenticado = True
-        st.experimental_rerun()
-    else:
-        st.error("Usuário ou senha incorretos")
+    
+    if st.button("Entrar"):
+        if usuario in USUARIOS and USUARIOS[usuario] == senha:
+            st.session_state.autenticado = True
+            st.experimental_rerun()
+        else:
+            st.error("Usuário ou senha incorretos")
 else:
     st.title("🎓 Gerador de Carteirinha Estudantil")
 
