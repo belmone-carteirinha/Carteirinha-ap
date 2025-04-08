@@ -31,7 +31,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    if foto:
+if foto:
         caminho_foto = "foto_temp.jpg"
         with open(caminho_foto, "wb") as f:
             f.write(foto.read())
@@ -52,7 +52,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo):
     c.drawString(30 * mm, altura - 29 * mm, f"Matrícula: {matricula}")
     c.drawString(30 * mm, altura - 36 * mm, f"Validade: {validade}")
 
-    if logotipo:
+ if logotipo:
         caminho_logo = f"logo_temp.{logotipo.name.split('.')[-1]}"
         with open(caminho_logo, "wb") as f:
             f.write(logotipo.read())
@@ -79,7 +79,7 @@ if not st.session_state.get("autenticado", False):
     st.title("🔐 Login")
     menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
 
-    if menu == "Login":
+if menu == "Login":
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
 if st.button("Entrar"):
@@ -87,7 +87,7 @@ if st.button("Entrar"):
             st.session_state.autenticado = True
             st.success("Login realizado com sucesso!")
             st.stop()
-        else:
+    else:
             st.error("Usuário ou senha incorretos")
 
     elif menu == "Cadastrar novo usuário":
@@ -99,5 +99,5 @@ if st.button("Entrar"):
             elif novo_usuario and nova_senha:
                 st.session_state.usuarios[novo_usuario] = nova_senha
                 st.success("Usuário cadastrado com sucesso!")
-            else:
+     else:
                 st.error("Preencha todos os campos.")
