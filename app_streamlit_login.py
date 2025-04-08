@@ -86,7 +86,7 @@ if not st.session_state.get("autenticado", False):
             if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
                 st.session_state.autenticado = True
 st.success("Login realizado com sucesso!")
-st.stop()  # Interrompe a execução para reiniciar na próxima interação
+st.stop()
             else:
                 st.error("Usuário ou senha incorretos")
 
