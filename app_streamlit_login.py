@@ -26,24 +26,20 @@ def gerar_qrcode(dados):
     return qr.make_image(fill_color="black", back_color="white")
 
 # Função para gerar carteirinha com imagem de fundo
-def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_fundo):
+def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
     buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=(85.6 * mm, 53.98 * mm))
     largura, altura = 85.6 * mm, 53.98 * mm
-    c = canvas.Canvas(buffer, pagesize=(largura, altura))
 
-    # Fundo
+    # Imagem de fundo
     if imagem_fundo:
-        extensao = imagem_fundo.name.split(".")[-1]
-        caminho_fundo = f"fundo_temp.{extensao}"
+        caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
         with open(caminho_fundo, "wb") as f:
             f.write(imagem_fundo.read())
-        try:
-            c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
-        except Exception as e:
-            st.error(f"Erro ao usar imagem de fundo: {e}")
+        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
         os.remove(caminho_fundo)
     else:
-        c.setFillColorRGB(0.9, 0.9, 0.9)
+        c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
     # Foto
@@ -63,7 +59,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
     c.drawString(30 * mm, altura - 36 * mm, f"Validade: {validade}")
 
     # QR Code
-    dados_qr = f"{nome} | {curso} | {matricula}"
+    dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
@@ -73,7 +69,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
     c.save()
     buffer.seek(0)
     return buffer
-# Interface de login/cadastro
+
 # Interface de login/cadastro
 if not st.session_state.autenticado:
     st.title("🔐 Login")
@@ -94,7 +90,6 @@ if not st.session_state.autenticado:
     elif menu == "Cadastrar novo usuário":
         novo_usuario = st.text_input("Novo usuário")
         nova_senha = st.text_input("Nova senha", type="password")
-        
         if st.button("Cadastrar"):
             if novo_usuario in st.session_state.usuarios:
                 st.warning("Usuário já existe.")
@@ -103,9 +98,8 @@ if not st.session_state.autenticado:
                 st.success("Usuário cadastrado com sucesso!")
             else:
                 st.error("Preencha todos os campos.")
-    st.stop()
-
 else:
+    # Interface principal
     st.title("🎓 Gerador de Carteirinha Estudantil")
 
     nome = st.text_input("Nome completo")
@@ -115,21 +109,21 @@ else:
     foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
     imagem_fundo = st.file_uploader("Imagem de fundo única (opcional)", type=["jpg", "jpeg", "png"])
 
-if st.button("Gerar Carteirinha"):
-    if nome and curso and matricula and validade and foto:
-        pdf = gerar_carteirinha(
-            nome,
-            curso,
-            matricula,
-            validade.strftime("%d/%m/%Y"),
-            foto,
-            imagem_fundo
-        )
-        st.download_button(
-            "📥 Baixar Carteirinha",
-            data=pdf,
-            file_name="carteirinha.pdf",
-            mime="application/pdf"
-        )
-    else:
-        st.error("Preencha todos os campos obrigatórios.")
+    if st.button("Gerar Carteirinha"):
+        if nome and curso and matricula and validade and foto:
+            pdf = gerar_carteirinha(
+                nome,
+                curso,
+                matricula,
+                validade.strftime("%d/%m/%Y"),
+                foto,
+                imagem_fundo
+            )
+            st.download_button(
+                "📥 Baixar Carteirinha",
+                data=pdf,
+                file_name="carteirinha.pdf",
+                mime="application/pdf"
+            )
+        else:
+            st.error("Preencha todos os campos obrigatórios.")
