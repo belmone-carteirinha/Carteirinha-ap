@@ -117,18 +117,6 @@ if not st.session_state.autenticado:
 else:
         st.error("Usuário ou senha incorretos")
 
-    elif menu == "Cadastrar novo usuário":
-        novo_usuario = st.text_input("Novo usuário")
-        nova_senha = st.text_input("Nova senha", type="password")
-        if st.button("Cadastrar"):
-            if novo_usuario in st.session_state.usuarios:
-                st.warning("Usuário já existe.")
-            elif novo_usuario and nova_senha:
-                st.session_state.usuarios[novo_usuario] = nova_senha
-                st.success("Usuário cadastrado com sucesso!")
-            else:
-                st.error("Preencha todos os campos.")
-
 # Interface principal
 else:
     st.title("🎓 Gerador de Carteirinha Estudantil")
