@@ -52,8 +52,8 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
             caminho_foto,
             5 * mm,
             altura / 2 - 15 * mm,
-            width=25 * mm,
-            height=30 * mm
+            width=20 * mm,
+            height=25 * mm
         )
         os.remove(caminho_foto)
 
@@ -78,8 +78,8 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         qr_path,
         largura - 25 * mm,
         5 * mm,
-        width=20 * mm,
-        height=20 * mm
+        width=15 * mm,
+        height=15 * mm
     )
     os.remove(qr_path)
 
