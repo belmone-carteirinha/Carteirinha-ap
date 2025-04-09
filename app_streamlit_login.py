@@ -72,51 +72,26 @@ if "usuarios" not in st.session_state:
         "admin": "1234"
     }
 
+if menu == "Login":
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+
     if st.button("Entrar"):
-            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-                st.session_state.autenticado = True
-                st.success("Login realizado com sucesso!")
-                st.experimental_rerun()
-            else:
-                st.error("Usuário ou senha incorretos")
-
-    elif menu == "Cadastrar novo usuário":
-        novo_usuario = st.text_input("Novo usuário")
-        nova_senha = st.text_input("Nova senha", type="password")
-        if st.button("Cadastrar"):
-            if novo_usuario in st.session_state.usuarios:
-                st.warning("Usuário já existe.")
-            elif novo_usuario and nova_senha:
-                st.session_state.usuarios[novo_usuario] = nova_senha
-                st.success("Usuário cadastrado com sucesso!")
-            else:
-                st.error("Preencha todos os campos.")
-else:
-    # Interface principal
-    st.title("🎓 Gerador de Carteirinha Estudantil")
-
-    nome = st.text_input("Nome completo")
-    curso = st.text_input("Curso")
-    matricula = st.text_input("Matrícula")
-    validade = st.date_input("Validade")
-    foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
-    imagem_fundo = st.file_uploader("Imagem de fundo única (opcional)", type=["jpg", "jpeg", "png"])
-
-    if st.button("Gerar Carteirinha"):
-        if nome and curso and matricula and validade and foto:
-            pdf = gerar_carteirinha(
-                nome,
-                curso,
-                matricula,
-                validade.strftime("%d/%m/%Y"),
-                foto,
-                imagem_fundo
-            )
-            st.download_button(
-                "📥 Baixar Carteirinha",
-                data=pdf,
-                file_name="carteirinha.pdf",
-                mime="application/pdf"
-            )
+        if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+            st.session_state.autenticado = True
+            st.success("Login realizado com sucesso!")
+            st.experimental_rerun()
         else:
-            st.error("Preencha todos os campos obrigatórios.")
+            st.error("Usuário ou senha incorretos")
+
+elif menu == "Cadastrar novo usuário":
+    novo_usuario = st.text_input("Novo usuário")
+    nova_senha = st.text_input("Nova senha", type="password")
+    if st.button("Cadastrar"):
+        if novo_usuario in st.session_state.usuarios:
+            st.warning("Usuário já existe.")
+        elif novo_usuario and nova_senha:
+            st.session_state.usuarios[novo_usuario] = nova_senha
+            st.success("Usuário cadastrado com sucesso!")
+        else:
+            st.error("Preencha todos os campos.")
