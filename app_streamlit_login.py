@@ -83,7 +83,6 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
     c.save()
     buffer.seek(0)
     return buffer
-
 # Interface de login/cadastro
 # Interface de login/cadastro
 if not st.session_state.autenticado:
@@ -105,6 +104,7 @@ if not st.session_state.autenticado:
     elif menu == "Cadastrar novo usuário":
         novo_usuario = st.text_input("Novo usuário")
         nova_senha = st.text_input("Nova senha", type="password")
+        
         if st.button("Cadastrar"):
             if novo_usuario in st.session_state.usuarios:
                 st.warning("Usuário já existe.")
