@@ -49,13 +49,18 @@ x_foto = 5 * mm  # margem da esquerda
 y_foto = (altura - foto_altura) / 2  # centralizado verticalmente
 c.drawImage(caminho_foto, x_foto, y_foto, width=foto_largura, height=foto_altura)
 
-    base_y = altura - 15 * mm
-linha_altura = 5 * mm  # espaçamento menor
+    # Adiciona os dados do aluno
+    c.setFont("Helvetica-Bold", 9)
+    c.setFillColorRGB(0, 0, 0)
 
-c.drawString(30 * mm, base_y, f"Nome: {nome}")
-c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
-c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
-c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
+    base_y = altura - 15 * mm
+    linha_altura = 3.5 * mm  # espaçamento ainda menor
+
+    c.drawString(30 * mm, base_y, f"Nome: {nome}")
+    c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
+    c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
+    c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
+
     # QR Code
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
     qr_img = gerar_qrcode(dados_qr)
