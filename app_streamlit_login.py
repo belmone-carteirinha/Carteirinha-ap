@@ -45,7 +45,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         except Exception:
             pass
 
-        imagem = imagem.resize((int(25 * mm), int(30 * mm)))
+        imagem = imagem.resize((int(20 * mm), int(25 * mm)))
         imagem.save(caminho_foto)
 
         c.drawImage(
@@ -60,7 +60,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     # Dados do aluno
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
-    base_y = altura - 15 * mm
+    base_y = altura - 25 * mm
     linha_altura = 4 * mm
 
     c.drawString(30 * mm, base_y, f"Nome: {nome}")
@@ -76,10 +76,10 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
 
     c.drawImage(
         qr_path,
-        largura - 25 * mm,
+        largura - 20 * mm,
         5 * mm,
-        width=15 * mm,
-        height=15 * mm
+        width=20 * mm,
+        height=20 * mm
     )
     os.remove(qr_path)
 
