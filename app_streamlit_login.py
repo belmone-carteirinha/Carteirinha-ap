@@ -28,13 +28,12 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
 
     # Fundo da carteirinha
 try:
+    # Fundo da carteirinha
+try:
     c.drawImage("fundo_padrao.jpg", 0, 0, width=largura, height=altura)
 except:
     c.setFillColorRGB(0.8, 1, 0.8)
     c.rect(0, 0, largura, altura, fill=True, stroke=False)
-    else:
-        c.setFillColorRGB(0.8, 1, 0.8)
-        c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
     # Foto do aluno (centralizado à esquerda)
     if foto:
