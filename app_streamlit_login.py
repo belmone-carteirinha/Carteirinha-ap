@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 # Inicialização segura do estado
 if "autenticado" not in st.session_state:
@@ -11,6 +12,18 @@ from PIL import Image
 import qrcode
 import io
 import os
+
+USUARIOS_PATH = "usuarios.json"
+
+def carregar_usuarios():
+    if os.path.exists(USUARIOS_PATH):
+        with open(USUARIOS_PATH, "r") as f:
+            return json.load(f)
+    return {"admin": "1234"}
+
+def salvar_usuarios(usuarios):
+    with open(USUARIOS_PATH, "w") as f:
+        json.dump(usuarios, f)
 
 # Tamanho padrão da carteirinha (cartão de crédito)
 IDCARD = (85.6 * mm, 54 * mm)
