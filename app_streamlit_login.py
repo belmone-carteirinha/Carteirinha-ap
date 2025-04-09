@@ -117,7 +117,6 @@ if not st.session_state.autenticado:
 else:
         st.error("Usuário ou senha incorretos")
 
-# Interface principal
 else:
     st.title("🎓 Gerador de Carteirinha Estudantil")
 
