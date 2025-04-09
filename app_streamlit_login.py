@@ -83,6 +83,7 @@ c.drawImage(
     height=20 * mm
 )
 os.remove(qr_path)
+
 c.save()
 buffer.seek(0)
 return buffer
