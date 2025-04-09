@@ -50,7 +50,7 @@ y_foto = (altura - foto_altura) / 2  # centralizado
 c.drawImage(caminho_foto, x_foto, y_foto, width=foto_largura, height=foto_altura)
 
     base_y = altura - 15 * mm
-linha_altura = 3 * mm  # espaçamento menor
+linha_altura = 5 * mm  # espaçamento menor
 
 c.drawString(30 * mm, base_y, f"Nome: {nome}")
 c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
