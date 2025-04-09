@@ -33,61 +33,60 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Foto do aluno (corrigindo rotação e redimensionando)
-if foto:
-    caminho_foto = "foto_temp.jpg"
-    imagem = Image.open(foto)
+    # Foto do aluno
+    if foto:
+        caminho_foto = "foto_temp.jpg"
+        imagem = Image.open(foto)
 
-    # Corrige orientação EXIF automaticamente
-    try:
-        from PIL import ImageOps
-        imagem = ImageOps.exif_transpose(imagem)
-    except Exception:
-        pass
+        # Corrigir rotação automática
+        try:
+            from PIL import ImageOps
+            imagem = ImageOps.exif_transpose(imagem)
+        except Exception:
+            pass
 
-    # Redimensiona a imagem
-    imagem = imagem.resize((int(25 * mm), int(30 * mm)))  # maior que antes
-    imagem.save(caminho_foto)
+        imagem = imagem.resize((int(25 * mm), int(30 * mm)))
+        imagem.save(caminho_foto)
 
-    # Inserir no PDF
-    c.drawImage(
-        caminho_foto,
-        5 * mm,
-        altura / 2 - 15 * mm,  # centralizado verticalmente
-        width=25 * mm,
-        height=30 * mm
-    )
-    os.remove(caminho_foto)
-    
+        c.drawImage(
+            caminho_foto,
+            5 * mm,
+            altura / 2 - 15 * mm,
+            width=25 * mm,
+            height=30 * mm
+        )
+        os.remove(caminho_foto)
+
     # Dados do aluno
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
     base_y = altura - 15 * mm
-    linha_altura = 3.5 * mm
+    linha_altura = 4 * mm
 
     c.drawString(30 * mm, base_y, f"Nome: {nome}")
     c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
     c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
     c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
 
-    # QR Code (maior também)
-dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
-qr_img = gerar_qrcode(dados_qr)
-qr_path = "qr_temp.png"
-qr_img.save(qr_path)
-c.drawImage(
-    qr_path,
-    largura - 25 * mm,  # distância da borda direita
-    5 * mm,
-    width=20 * mm,
-    height=20 * mm
-)
-os.remove(qr_path)
+    # QR Code
+    dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
+    qr_img = gerar_qrcode(dados_qr)
+    qr_path = "qr_temp.png"
+    qr_img.save(qr_path)
 
-c.save()
-buffer.seek(0)
-return buffer
+    c.drawImage(
+        qr_path,
+        largura - 25 * mm,
+        5 * mm,
+        width=20 * mm,
+        height=20 * mm
+    )
+    os.remove(qr_path)
 
+    c.save()
+    buffer.seek(0)
+    return buffer
+    
 # Interface de login/cadastro
 if not st.session_state.autenticado:
     st.title("🔐 Login")
