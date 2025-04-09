@@ -66,17 +66,17 @@ c.drawString(texto_x, base_y - linha_altura, f"Curso: {curso}")
 c.drawString(texto_x, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
 c.drawString(texto_x, base_y - 3 * linha_altura, f"Validade: {validade}")
 
-# QR Code no canto inferior direito
-dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
-qr_img = gerar_qrcode(dados_qr)
-qr_path = "qr_temp.png"
-qr_img.save(qr_path)
-c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
-os.remove(qr_path)
+# Geração e inserção do QR Code
+    dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
+    qr_img = gerar_qrcode(dados_qr)
+    qr_path = "qr_temp.png"
+    qr_img.save(qr_path)
+    c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
+    os.remove(qr_path)
 
-c.save()
-buffer.seek(0)
-return buffer
+    c.save()
+    buffer.seek(0)
+    return buffer
 
 # Interface de login/cadastro
 if not st.session_state.autenticado:
