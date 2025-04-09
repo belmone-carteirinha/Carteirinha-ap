@@ -46,13 +46,31 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Foto do aluno
     if foto:
-        caminho_foto = "foto_temp.jpg"
-        with open(caminho_foto, "wb") as f:
-            f.write(foto.read())
-        c.drawImage(caminho_foto, 6 * mm, altura / 2 - -16 * mm, width=20 * mm, height=23 * mm)
-        os.remove(caminho_foto)
+    caminho_foto = "foto_temp.jpg"
+    imagem = Image.open(foto)
+
+    # Corrigir rotação automática
+    try:
+        from PIL import ImageOps
+        imagem = ImageOps.exif_transpose(imagem)
+    except Exception:
+        pass
+
+    # Tamanho desejado da foto na carteirinha em pixels (em torno de 180x210 px a 300 dpi)
+    tamanho_destino = (int(22 * mm), int(28 * mm))  # em pixels a 72 dpi padrão
+
+    imagem.thumbnail(tamanho_destino, Image.LANCZOS)  # preserva qualidade sem esticar
+    imagem.save(caminho_foto, dpi=(300, 300))  # melhor qualidade no PDF
+
+    c.drawImage(
+        caminho_foto,
+        8 * mm,
+        altura / 35 - -16 * mm,
+        width=22 * mm,
+        height=28 * mm
+    )
+    os.remove(caminho_foto)
 
     # Dados do aluno
     c.setFont("Helvetica-Bold", 9)
