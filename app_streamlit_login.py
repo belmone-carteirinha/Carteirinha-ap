@@ -51,7 +51,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         c.drawImage(
             caminho_foto,
             5 * mm,
-            altura / 5 - 18 * mm,
+            altura / 6 - 10 * mm,
             width=20 * mm,
             height=25 * mm
         )
