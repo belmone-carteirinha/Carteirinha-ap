@@ -42,13 +42,12 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Foto
-    if foto:
-        caminho_foto = "foto_temp.jpg"
-        with open(caminho_foto, "wb") as f:
-            f.write(foto.read())
-        c.drawImage(caminho_foto, 5 * mm, altura - 30 * mm, width=20 * mm, height=25 * mm)
-        os.remove(caminho_foto)
+    # # Foto no centro esquerdo
+foto_largura = 20 * mm
+foto_altura = 25 * mm
+x_foto = 5 * mm  # margem da esquerda
+y_foto = (altura - foto_altura) / 2  # centralizado verticalmente
+c.drawImage(caminho_foto, x_foto, y_foto, width=foto_largura, height=foto_altura)
 
     # Dados
     c.setFont("Helvetica-Bold", 9)
