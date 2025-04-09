@@ -116,7 +116,7 @@ else:
     imagem_fundo = st.file_uploader("Imagem de fundo única (opcional)", type=["jpg", "jpeg", "png"])
 
     if st.button("Gerar Carteirinha"):
-    if nome and curso and matricula and validade and foto:
+        if nome and curso and matricula and validade and foto:
         pdf = gerar_carteirinha(
             nome,
             curso,
