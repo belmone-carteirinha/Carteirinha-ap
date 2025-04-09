@@ -36,8 +36,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
         caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
         with open(caminho_fundo, "wb") as f:
             f.write(imagem_fundo.read())
-        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
-        os.remove(caminho_fundo)
+        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura, preserveAspectRatio=True, anchor='c')
     else:
         # Fundo padrão se não enviar imagem
         c.setFillColorRGB(0.8, 1, 0.8)
@@ -58,19 +57,6 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_f
     c.drawString(30 * mm, altura - 22 * mm, f"Curso: {curso}")
     c.drawString(30 * mm, altura - 29 * mm, f"Matrícula: {matricula}")
     c.drawString(30 * mm, altura - 36 * mm, f"Validade: {validade}")
-
-    # Adiciona logotipo se fornecido
-    if logotipo:
-        caminho_logo = f"logo_temp.{logotipo.name.split('.')[-1]}"
-        with open(caminho_logo, "wb") as f:
-            f.write(logotipo.read())
-        logo_width = 20 * mm
-        logo_height = 15 * mm
-        x_central = (largura - logo_width) / 2
-        y_base = 5 * mm
-        c.drawImage(caminho_logo, x_central, y_base, width=logo_width, height=logo_height)
-        c.drawImage(caminho_logo, 5 * mm, y_base, width=logo_width, height=logo_height)
-        os.remove(caminho_logo)
 
     # Geração e inserção do QR Code
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
@@ -123,7 +109,6 @@ else:
     matricula = st.text_input("Matrícula")
     validade = st.date_input("Validade")
     foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
-    logotipo = st.file_uploader("Logotipo (opcional)", type=["jpg", "jpeg", "png"])
     imagem_fundo = st.file_uploader("Imagem de fundo única (opcional)", type=["jpg", "jpeg", "png"])
 
     if st.button("Gerar Carteirinha"):
@@ -134,7 +119,6 @@ else:
                 matricula,
                 validade.strftime("%d/%m/%Y"),
                 foto,
-                logotipo,
                 imagem_fundo
             )
             st.download_button("📥 Baixar Carteirinha", data=pdf, file_name="carteirinha.pdf", mime="application/pdf")
