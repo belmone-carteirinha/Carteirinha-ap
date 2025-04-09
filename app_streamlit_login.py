@@ -114,8 +114,7 @@ if not st.session_state.autenticado:
             else:
                 st.error("Preencha todos os campos.")
     st.stop()
-    
-    else:
+else:
         st.error("Usuário ou senha incorretos")
 
     elif menu == "Cadastrar novo usuário":
