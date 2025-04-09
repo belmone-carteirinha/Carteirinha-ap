@@ -27,53 +27,50 @@ def gerar_qrcode(dados):
 
 # Função para gerar carteirinha com imagem de fundo
 def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import IDCARD
+    from reportlab.lib.units import mm
+    import io
+    from PIL import Image
+
     buffer = io.BytesIO()
-    c = canvas.Canvas(buffer, pagesize=(85.6 * mm, 53.98 * mm))
-    largura, altura = 85.6 * mm, 53.98 * mm
+    c = canvas.Canvas(buffer, pagesize=IDCARD)
+    largura, altura = IDCARD
 
-    # Imagem de fundo
-    if imagem_fundo:
-        caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
-        with open(caminho_fundo, "wb") as f:
-            f.write(imagem_fundo.read())
-        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
-        os.remove(caminho_fundo)
-    else:
-        c.setFillColorRGB(0.8, 1, 0.8)
-        c.rect(0, 0, largura, altura, fill=True, stroke=False)
+    # Adiciona imagem de fundo se houver
+    if imagem_fundo is not None:
+        imagem_fundo = Image.open(imagem_fundo)
+        imagem_fundo_path = "bg_temp.jpg"
+        imagem_fundo.save(imagem_fundo_path)
+        c.drawImage(imagem_fundo_path, 0, 0, width=largura, height=altura)
 
-    # Adiciona a imagem do aluno no centro esquerdo
-if foto:
-    foto_path = "foto_temp.png"
-    foto.save(foto_path)
-    foto_largura = 25 * mm
-    foto_altura = 30 * mm
-    c.drawImage(foto_path, 5 * mm, (altura - foto_altura) / 2, width=foto_largura, height=foto_altura)
-    os.remove(foto_path)
+    # Adiciona a foto do aluno (lado esquerdo centralizado verticalmente)
+    if foto is not None:
+        img = Image.open(foto)
+        img_path = "foto_temp.jpg"
+        img.save(img_path)
+        c.drawImage(img_path, 10 * mm, altura / 2 - 17 * mm, width=25 * mm, height=25 * mm)
 
-# Adiciona os dados do aluno ao lado da foto
-c.setFont("Helvetica-Bold", 9)
-c.setFillColorRGB(0, 0, 0)
+    # Adiciona os dados do aluno
+    c.setFont("Helvetica-Bold", 9)
+    c.setFillColorRGB(0, 0, 0)
 
-base_y = altura - 15 * mm
-linha_altura = 4 * mm
+    base_y = altura - 15 * mm
+    linha_altura = 3.5 * mm  # espaçamento ajustado
 
-# Os textos começam um pouco à direita da foto
-texto_x = 35 * mm
+    c.drawString(38 * mm, base_y, f"Nome: {nome}")
+    c.drawString(38 * mm, base_y - linha_altura, f"Curso: {curso}")
+    c.drawString(38 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
+    c.drawString(38 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
 
-c.drawString(texto_x, base_y, f"Nome: {nome}")
-c.drawString(texto_x, base_y - linha_altura, f"Curso: {curso}")
-c.drawString(texto_x, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
-c.drawString(texto_x, base_y - 3 * linha_altura, f"Validade: {validade}")
-
-# Geração e inserção do QR Code
+    # Geração e inserção do QR Code
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
     c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
-    os.remove(qr_path)
 
+    os.remove(qr_path)
     c.save()
     buffer.seek(0)
     return buffer
