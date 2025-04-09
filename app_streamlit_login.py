@@ -22,16 +22,17 @@ def gerar_qrcode(dados):
     return qr.make_image(fill_color="black", back_color="white")
 
 def gerar_carteirinha(nome, curso, matricula, validade, foto):
+def gerar_carteirinha(nome, curso, matricula, validade, foto):
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=IDCARD)
     largura, altura = IDCARD
 
     # Fundo da carteirinha
-try:
-    c.drawImage("fundo_padrao.jpg", 0, 0, width=largura, height=altura)
-except:
-    c.setFillColorRGB(0.8, 1, 0.8)
-    c.rect(0, 0, largura, altura, fill=True, stroke=False)
+    try:
+        c.drawImage("fundo_padrao.jpg", 0, 0, width=largura, height=altura)
+    except:
+        c.setFillColorRGB(0.8, 1, 0.8)
+        c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
     # Foto do aluno (centralizado à esquerda)
     if foto:
