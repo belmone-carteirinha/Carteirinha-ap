@@ -51,17 +51,17 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         c.drawImage(
             caminho_foto,
             5 * mm,
-            altura / 12 - -10 * mm,
+            altura / 13 - -10 * mm,
             width=20 * mm,
-            height=25 * mm
+            height=23 * mm
         )
         os.remove(caminho_foto)
 
     # Dados do aluno
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
-    base_y = altura - 25 * mm
-    linha_altura = 4 * mm
+    base_y = altura - 23 * mm
+    linha_altura = 4,5 * mm
 
     c.drawString(30 * mm, base_y, f"Nome: {nome}")
     c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
