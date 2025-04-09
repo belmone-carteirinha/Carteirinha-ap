@@ -27,12 +27,11 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
     largura, altura = IDCARD
 
     # Fundo da carteirinha
-    if imagem_fundo:
-        caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
-        with open(caminho_fundo, "wb") as f:
-            f.write(imagem_fundo.read())
-        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
-        os.remove(caminho_fundo)
+try:
+    c.drawImage("fundo_padrao.jpg", 0, 0, width=largura, height=altura)
+except:
+    c.setFillColorRGB(0.8, 1, 0.8)
+    c.rect(0, 0, largura, altura, fill=True, stroke=False)
     else:
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
