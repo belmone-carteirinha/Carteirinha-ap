@@ -58,8 +58,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         except Exception:
             pass
 
-        imagem = imagem.resize((int(20 * mm), int(25 * mm)))
-        imagem.save(caminho_foto)
+        imagem = imagem.resize((int(20 * mm), int(25 * mm)), Image.LANCZOS)
 
         c.drawImage(
             caminho_foto,
