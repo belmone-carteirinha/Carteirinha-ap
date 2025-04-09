@@ -117,7 +117,7 @@ else:
 
     if st.button("Gerar Carteirinha"):
         if nome and curso and matricula and validade and foto:
-            pdf = gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo)
+            pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto, imagem_fundo)
             
             st.download_button(
     "📥 Baixar Carteirinha",
