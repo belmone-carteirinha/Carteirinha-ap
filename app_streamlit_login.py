@@ -63,14 +63,14 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
     buffer.seek(0)
     return buffer
 
-# Interface de login/cadastro
-if not st.session_state.autenticado:
-    st.title("🔐 Login")
-    menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
+# Inicialização da sessão
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
 
-    if menu == "Login":
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
+if "usuarios" not in st.session_state:
+    st.session_state.usuarios = {
+        "admin": "1234"
+    }
 
         if st.button("Entrar"):
             if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
