@@ -1,4 +1,10 @@
 import streamlit as st
+# Inicialização segura do estado
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
+
+if "usuarios" not in st.session_state:
+    st.session_state.usuarios = {"admin": "1234"}
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from PIL import Image
