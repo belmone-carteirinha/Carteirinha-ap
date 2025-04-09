@@ -72,7 +72,7 @@ if "usuarios" not in st.session_state:
         "admin": "1234"
     }
 
-        if st.button("Entrar"):
+    if st.button("Entrar"):
             if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
                 st.session_state.autenticado = True
                 st.success("Login realizado com sucesso!")
