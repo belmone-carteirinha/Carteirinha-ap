@@ -20,8 +20,7 @@ def gerar_qrcode(dados):
     qr.add_data(dados)
     qr.make(fit=True)
     return qr.make_image(fill_color="black", back_color="white")
-
-def gerar_carteirinha(nome, curso, matricula, validade, foto):
+    
 def gerar_carteirinha(nome, curso, matricula, validade, foto):
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=IDCARD)
