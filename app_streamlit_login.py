@@ -33,12 +33,30 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Foto do aluno (centralizado à esquerda)
+    # Foto do aluno (corrigindo rotação e redimensionando)
     if foto:
         caminho_foto = "foto_temp.jpg"
-        with open(caminho_foto, "wb") as f:
-            f.write(foto.read())
-        c.drawImage(caminho_foto, 5 * mm, altura / 2 - 12.5 * mm, width=20 * mm, height=25 * mm)
+        imagem = Image.open(foto)
+
+        # Corrige orientação EXIF automaticamente
+        try:
+            from PIL import ImageOps
+            imagem = ImageOps.exif_transpose(imagem)
+        except Exception as e:
+            pass  # ignora se der erro, continua com imagem original
+
+        # Redimensiona a imagem para o tamanho desejado
+        imagem = imagem.resize((int(15 * mm), int(20 * mm)))  # dimensões em pixels aproximados
+        imagem.save(caminho_foto)
+
+        # Inserir no PDF
+        c.drawImage(
+            caminho_foto,
+            5 * mm,
+            altura / 2 - 10 * mm,
+            width=15 * mm,
+            height=20 * mm
+        )
         os.remove(caminho_foto)
 
     # Dados do aluno
@@ -52,12 +70,18 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
     c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
 
-    # QR Code
+    # QR Code (menor)
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
-    c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
+    c.drawImage(
+        qr_path,
+        largura - 15 * mm,
+        5 * mm,
+        width=12 * mm,
+        height=12 * mm
+    )
     os.remove(qr_path)
 
     c.save()
