@@ -115,6 +115,11 @@ else:
         if nome and curso and matricula and validade and foto:
             pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto, imagem_fundo)
             
-            st.download_button("📥 Baixar Carteirinha", data=pdf, file_name="carteirinha.pdf", mime="application/pdf")
+            st.download_button(
+    "📥 Baixar Carteirinha",
+    data=pdf,
+    file_name="carteirinha.pdf",
+    mime="application/pdf"
+)
         else:
             st.error("Preencha todos os campos obrigatórios.")
