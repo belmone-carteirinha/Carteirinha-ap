@@ -83,10 +83,9 @@ c.drawImage(
     height=20 * mm
 )
 os.remove(qr_path)
-
-    c.save()
-    buffer.seek(0)
-    return buffer
+c.save()
+buffer.seek(0)
+return buffer
 
 # Interface de login/cadastro
 if not st.session_state.autenticado:
