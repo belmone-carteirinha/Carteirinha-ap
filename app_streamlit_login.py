@@ -6,7 +6,7 @@ import qrcode
 import io
 import os
 
-# Tamanho padrão da carteirinha (cartão de crédito)
+# Tamanho padrão da carteirinha
 IDCARD = (85.6 * mm, 54 * mm)
 
 def gerar_qrcode(dados):
@@ -31,7 +31,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Foto do aluno (centralizado à esquerda)
+    # Foto do aluno
     if foto:
         caminho_foto = "foto_temp.jpg"
         with open(caminho_foto, "wb") as f:
@@ -39,12 +39,12 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         c.drawImage(caminho_foto, 5 * mm, altura / 2 - 12.5 * mm, width=20 * mm, height=25 * mm)
         os.remove(caminho_foto)
 
-    # Dados do aluno centralizados
+    # Dados centralizados
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
     base_y = altura - 15 * mm
     linha_altura = 3.5 * mm
-    centro_x = largura / 2  # ponto central da carteirinha
+    centro_x = largura / 2
 
     c.drawCentredString(centro_x, base_y, f"Nome: {nome}")
     c.drawCentredString(centro_x, base_y - linha_altura, f"Curso: {curso}")
@@ -63,28 +63,31 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
     buffer.seek(0)
     return buffer
 
-# Inicialização da sessão
+# Sessão
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
 if "usuarios" not in st.session_state:
-    st.session_state.usuarios = {
-        "admin": "1234"
-    }
+    st.session_state.usuarios = {"admin": "1234"}
 
+menu = st.sidebar.selectbox("Menu", ["Login", "Cadastrar novo usuário", "Gerar Carteirinha"])
+
+# Login
 if menu == "Login":
+    st.title("Login")
     usuario = st.text_input("Usuário")
     senha = st.text_input("Senha", type="password")
-
     if st.button("Entrar"):
         if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
             st.session_state.autenticado = True
             st.success("Login realizado com sucesso!")
             st.experimental_rerun()
         else:
-            st.error("Usuário ou senha incorretos")
+            st.error("Usuário ou senha incorretos.")
 
+# Cadastro
 elif menu == "Cadastrar novo usuário":
+    st.title("Cadastro de novo usuário")
     novo_usuario = st.text_input("Novo usuário")
     nova_senha = st.text_input("Nova senha", type="password")
     if st.button("Cadastrar"):
@@ -95,3 +98,30 @@ elif menu == "Cadastrar novo usuário":
             st.success("Usuário cadastrado com sucesso!")
         else:
             st.error("Preencha todos os campos.")
+
+# Geração da carteirinha
+elif menu == "Gerar Carteirinha":
+    if st.session_state.autenticado:
+        st.title("🎓 Gerador de Carteirinha Estudantil")
+        nome = st.text_input("Nome completo")
+        curso = st.text_input("Curso")
+        matricula = st.text_input("Matrícula")
+        validade = st.date_input("Validade")
+        foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
+        imagem_fundo = st.file_uploader("Imagem de fundo única (opcional)", type=["jpg", "jpeg", "png"])
+
+        if st.button("Gerar Carteirinha"):
+            if nome and curso and matricula and validade and foto:
+                pdf = gerar_carteirinha(
+                    nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto, imagem_fundo
+                )
+                st.download_button(
+                    "📥 Baixar Carteirinha",
+                    data=pdf,
+                    file_name="carteirinha.pdf",
+                    mime="application/pdf"
+                )
+            else:
+                st.error("Preencha todos os campos obrigatórios.")
+    else:
+        st.warning("Você precisa estar logado para gerar a carteirinha.")
