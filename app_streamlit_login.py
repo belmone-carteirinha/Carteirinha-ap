@@ -39,16 +39,17 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         c.drawImage(caminho_foto, 5 * mm, altura / 2 - 12.5 * mm, width=20 * mm, height=25 * mm)
         os.remove(caminho_foto)
 
-    # Dados do aluno
+    # Dados do aluno centralizados
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
     base_y = altura - 15 * mm
     linha_altura = 3.5 * mm
+    centro_x = largura / 2  # ponto central da carteirinha
 
-    c.drawString(30 * mm, base_y, f"Nome: {nome}")
-    c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
-    c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
-    c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
+    c.drawCentredString(centro_x, base_y, f"Nome: {nome}")
+    c.drawCentredString(centro_x, base_y - linha_altura, f"Curso: {curso}")
+    c.drawCentredString(centro_x, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
+    c.drawCentredString(centro_x, base_y - 3 * linha_altura, f"Validade: {validade}")
 
     # QR Code
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
