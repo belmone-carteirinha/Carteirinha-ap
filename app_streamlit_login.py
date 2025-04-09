@@ -47,10 +47,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         caminho_foto = "foto_temp.jpg"
         with open(caminho_foto, "wb") as f:
             f.write(foto.read())
-        c.drawImage(caminho_foto, 5 * mm, altura - 30 * mm, width=20 * mm, height=25 * mm)
-        os.remove(caminho_foto)
-
-    # Adiciona os dados do aluno
+        # Adiciona os dados do aluno
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
 
@@ -61,7 +58,8 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
     c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
     c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
     c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
-    # QR Code
+
+    # Geração e inserção do QR Code
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
