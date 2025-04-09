@@ -42,34 +42,41 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Foto
-    if foto:
-        caminho_foto = "foto_temp.jpg"
-        with open(caminho_foto, "wb") as f:
-            f.write(foto.read())
-        # Adiciona os dados do aluno
-    c.setFont("Helvetica-Bold", 9)
-    c.setFillColorRGB(0, 0, 0)
+    # Adiciona a imagem do aluno no centro esquerdo
+if foto:
+    foto_path = "foto_temp.png"
+    foto.save(foto_path)
+    foto_largura = 25 * mm
+    foto_altura = 30 * mm
+    c.drawImage(foto_path, 5 * mm, (altura - foto_altura) / 2, width=foto_largura, height=foto_altura)
+    os.remove(foto_path)
 
-    base_y = altura - 15 * mm
-    linha_altura = 3.5 * mm  # espaçamento ajustado
+# Adiciona os dados do aluno ao lado da foto
+c.setFont("Helvetica-Bold", 9)
+c.setFillColorRGB(0, 0, 0)
 
-    c.drawString(30 * mm, base_y, f"Nome: {nome}")
-    c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
-    c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
-    c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
+base_y = altura - 15 * mm
+linha_altura = 4 * mm
 
-    # Geração e inserção do QR Code
-    dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
-    qr_img = gerar_qrcode(dados_qr)
-    qr_path = "qr_temp.png"
-    qr_img.save(qr_path)
-    c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
-    os.remove(qr_path)
+# Os textos começam um pouco à direita da foto
+texto_x = 35 * mm
 
-    c.save()
-    buffer.seek(0)
-    return buffer
+c.drawString(texto_x, base_y, f"Nome: {nome}")
+c.drawString(texto_x, base_y - linha_altura, f"Curso: {curso}")
+c.drawString(texto_x, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
+c.drawString(texto_x, base_y - 3 * linha_altura, f"Validade: {validade}")
+
+# QR Code no canto inferior direito
+dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
+qr_img = gerar_qrcode(dados_qr)
+qr_path = "qr_temp.png"
+qr_img.save(qr_path)
+c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
+os.remove(qr_path)
+
+c.save()
+buffer.seek(0)
+return buffer
 
 # Interface de login/cadastro
 if not st.session_state.autenticado:
