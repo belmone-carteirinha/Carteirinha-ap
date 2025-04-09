@@ -49,24 +49,9 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     # Foto do aluno
     if foto:
         caminho_foto = "foto_temp.jpg"
-        imagem = Image.open(foto)
-
-        # Corrigir rotação automática
-        try:
-            from PIL import ImageOps
-            imagem = ImageOps.exif_transpose(imagem)
-        except Exception:
-            pass
-
-        imagem = imagem.resize((int(20 * mm), int(25 * mm)), Image.LANCZOS)
-
-        c.drawImage(
-            caminho_foto,
-            6 * mm,
-            altura / 35 - -16 * mm,
-            width=20 * mm,
-            height=23 * mm
-        )
+        with open(caminho_foto, "wb") as f:
+            f.write(foto.read())
+        c.drawImage(caminho_foto, 6 * mm, altura / 2 - -16 * mm, width=20 * mm, height=23 * mm)
         os.remove(caminho_foto)
 
     # Dados do aluno
