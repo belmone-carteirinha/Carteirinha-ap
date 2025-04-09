@@ -26,23 +26,27 @@ def gerar_qrcode(dados):
     return qr.make_image(fill_color="black", back_color="white")
 
 # Função para gerar carteirinha com imagem de fundo
-def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
+def gerar_carteirinha(nome, curso, matricula, validade, foto, logotipo, imagem_fundo):
     buffer = io.BytesIO()
-    c = canvas.Canvas("carteirinha.pdf", pagesize=(85.6 * mm, 53.98 * mm))
     largura, altura = 85.6 * mm, 53.98 * mm
+    c = canvas.Canvas(buffer, pagesize=(largura, altura))
 
-    # Adiciona imagem de fundo se existir
+    # Fundo
     if imagem_fundo:
-        caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
+        extensao = imagem_fundo.name.split(".")[-1]
+        caminho_fundo = f"fundo_temp.{extensao}"
         with open(caminho_fundo, "wb") as f:
             f.write(imagem_fundo.read())
-        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura, preserveAspectRatio=True, anchor='c')
+        try:
+            c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
+        except Exception as e:
+            st.error(f"Erro ao usar imagem de fundo: {e}")
+        os.remove(caminho_fundo)
     else:
-        # Fundo padrão se não enviar imagem
-        c.setFillColorRGB(0.8, 1, 0.8)
+        c.setFillColorRGB(0.9, 0.9, 0.9)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Adiciona a foto do aluno
+    # Foto
     if foto:
         caminho_foto = "foto_temp.jpg"
         with open(caminho_foto, "wb") as f:
@@ -50,7 +54,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
         c.drawImage(caminho_foto, 5 * mm, altura - 30 * mm, width=20 * mm, height=25 * mm)
         os.remove(caminho_foto)
 
-    # Adiciona os dados do aluno
+    # Dados
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
     c.drawString(30 * mm, altura - 15 * mm, f"Nome: {nome}")
@@ -58,8 +62,8 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
     c.drawString(30 * mm, altura - 29 * mm, f"Matrícula: {matricula}")
     c.drawString(30 * mm, altura - 36 * mm, f"Validade: {validade}")
 
-    # Geração e inserção do QR Code
-    dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
+    # QR Code
+    dados_qr = f"{nome} | {curso} | {matricula}"
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
