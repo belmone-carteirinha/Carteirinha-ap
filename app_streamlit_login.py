@@ -6,71 +6,58 @@ import qrcode
 import io
 import os
 
-# Usuários pré-cadastrados
-USUARIOS = {
-    "admin": "1234",
-    "adriel": "senha123"
-}
+# Tamanho padrão da carteirinha (cartão de crédito)
+IDCARD = (85.6 * mm, 54 * mm)
 
-if "usuarios" not in st.session_state:
-    st.session_state.usuarios = USUARIOS.copy()
-
-if "autenticado" not in st.session_state:
-    st.session_state.autenticado = False
-
-# Função para gerar QR Code
 def gerar_qrcode(dados):
     qr = qrcode.QRCode(box_size=2, border=2)
     qr.add_data(dados)
     qr.make(fit=True)
     return qr.make_image(fill_color="black", back_color="white")
 
-# Função para gerar carteirinha com imagem de fundo
 def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.pagesizes import IDCARD
-    from reportlab.lib.units import mm
-    import io
-    from PIL import Image
-
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=IDCARD)
     largura, altura = IDCARD
 
-    # Adiciona imagem de fundo se houver
-    if imagem_fundo is not None:
-        imagem_fundo = Image.open(imagem_fundo)
-        imagem_fundo_path = "bg_temp.jpg"
-        imagem_fundo.save(imagem_fundo_path)
-        c.drawImage(imagem_fundo_path, 0, 0, width=largura, height=altura)
+    # Fundo da carteirinha
+    if imagem_fundo:
+        caminho_fundo = f"fundo_temp.{imagem_fundo.name.split('.')[-1]}"
+        with open(caminho_fundo, "wb") as f:
+            f.write(imagem_fundo.read())
+        c.drawImage(caminho_fundo, 0, 0, width=largura, height=altura)
+        os.remove(caminho_fundo)
+    else:
+        c.setFillColorRGB(0.8, 1, 0.8)
+        c.rect(0, 0, largura, altura, fill=True, stroke=False)
 
-    # Adiciona a foto do aluno (lado esquerdo centralizado verticalmente)
-    if foto is not None:
-        img = Image.open(foto)
-        img_path = "foto_temp.jpg"
-        img.save(img_path)
-        c.drawImage(img_path, 10 * mm, altura / 2 - 17 * mm, width=25 * mm, height=25 * mm)
+    # Foto do aluno (centralizado à esquerda)
+    if foto:
+        caminho_foto = "foto_temp.jpg"
+        with open(caminho_foto, "wb") as f:
+            f.write(foto.read())
+        c.drawImage(caminho_foto, 5 * mm, altura / 2 - 12.5 * mm, width=20 * mm, height=25 * mm)
+        os.remove(caminho_foto)
 
-    # Adiciona os dados do aluno
+    # Dados do aluno
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
-
     base_y = altura - 15 * mm
-    linha_altura = 3.5 * mm  # espaçamento ajustado
+    linha_altura = 3.5 * mm
 
-    c.drawString(38 * mm, base_y, f"Nome: {nome}")
-    c.drawString(38 * mm, base_y - linha_altura, f"Curso: {curso}")
-    c.drawString(38 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
-    c.drawString(38 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
+    c.drawString(30 * mm, base_y, f"Nome: {nome}")
+    c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
+    c.drawString(30 * mm, base_y - 2 * linha_altura, f"Matrícula: {matricula}")
+    c.drawString(30 * mm, base_y - 3 * linha_altura, f"Validade: {validade}")
 
-    # Geração e inserção do QR Code
+    # QR Code
     dados_qr = f"Nome: {nome}\nCurso: {curso}\nMatrícula: {matricula}"
     qr_img = gerar_qrcode(dados_qr)
     qr_path = "qr_temp.png"
     qr_img.save(qr_path)
     c.drawImage(qr_path, largura - 18 * mm, 5 * mm, width=15 * mm, height=15 * mm)
-
     os.remove(qr_path)
+
     c.save()
     buffer.seek(0)
     return buffer
