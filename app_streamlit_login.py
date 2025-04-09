@@ -114,8 +114,6 @@ if not st.session_state.autenticado:
             else:
                 st.error("Preencha todos os campos.")
     st.stop()
-else:
-        st.error("Usuário ou senha incorretos")
 
 else:
     st.title("🎓 Gerador de Carteirinha Estudantil")
