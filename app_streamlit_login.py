@@ -46,11 +46,11 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto, imagem_fundo):
 foto_largura = 20 * mm
 foto_altura = 25 * mm
 x_foto = 5 * mm  # margem da esquerda
-y_foto = (altura - foto_altura) / 2  # centralizado verticalmente
+y_foto = (altura - foto_altura) / 2  # centralizado
 c.drawImage(caminho_foto, x_foto, y_foto, width=foto_largura, height=foto_altura)
 
     base_y = altura - 15 * mm
-linha_altura = 5 * mm  # espaçamento menor
+linha_altura = 3 * mm  # espaçamento menor
 
 c.drawString(30 * mm, base_y, f"Nome: {nome}")
 c.drawString(30 * mm, base_y - linha_altura, f"Curso: {curso}")
