@@ -94,7 +94,6 @@ if not st.session_state.autenticado:
             if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
                 st.session_state.autenticado = True
                 st.session_state.pagina = "principal"
-                st.success("Login realizado com sucesso!")
                 st.experimental_rerun()
             else:
                 st.error("Usuário ou senha incorretos.")
