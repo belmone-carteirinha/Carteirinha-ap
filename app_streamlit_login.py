@@ -105,41 +105,38 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     buffer.seek(0)
     return buffer
     
-# Interface de login/cadastro
-if not st.session_state.autenticado:
-    st.title("🔐 Login ou Cadastro")
+# Inicialização do estado
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
 
-    opcao = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
+if "usuarios" not in st.session_state:
+    st.session_state.usuarios = {"admin": "1234"}
 
-    if opcao == "Login":
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
+if "pagina" not in st.session_state:
+    st.session_state.pagina = "login"
+
+# Função para trocar de página
+def ir_para_pagina_principal():
+    st.session_state.pagina = "principal"
+
+# Página de login
+if st.session_state.pagina == "login":
+    st.title("🔐 Login")
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
     
     if st.button("Entrar"):
         if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
             st.session_state.autenticado = True
-            st.success("Login realizado com sucesso!")
-            st.stop()  # Interrompe a execução aqui e recarrega naturalmente o app
+            ir_para_pagina_principal()
         else:
-            st.error("Usuário ou senha incorretos.")
+            st.error("Usuário ou senha incorretos")
 
-    elif opcao == "Cadastrar novo usuário":
-        novo_usuario = st.text_input("Novo usuário")
-        nova_senha = st.text_input("Nova senha", type="password")
-        if st.button("Cadastrar"):
-            if novo_usuario in st.session_state.usuarios:
-                st.warning("Usuário já existe.")
-            elif novo_usuario and nova_senha:
-                st.session_state.usuarios[novo_usuario] = nova_senha
-                salvar_usuarios(st.session_state.usuarios)
-                st.success("Usuário cadastrado com sucesso!")
-            else:
-                st.error("Preencha todos os campos.")
-
-# Interface da carteirinha (usuário autenticado)
-else:
+# Página principal (após login)
+elif st.session_state.pagina == "principal":
     st.title("🎓 Gerador de Carteirinha Estudantil")
-
+    st.write("Bem-vindo,", usuario)
+    
     nome = st.text_input("Nome completo")
     curso = st.text_input("Curso")
     matricula = st.text_input("Matrícula")
@@ -148,7 +145,18 @@ else:
 
     if st.button("Gerar Carteirinha"):
         if nome and curso and matricula and validade and foto:
-            pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto)
-            st.download_button("📥 Baixar Carteirinha", data=pdf, file_name="carteirinha.pdf", mime="application/pdf")
+            pdf = gerar_carteirinha(
+                nome,
+                curso,
+                matricula,
+                validade.strftime("%d/%m/%Y"),
+                foto
+            )
+            st.download_button(
+                "📥 Baixar Carteirinha",
+                data=pdf,
+                file_name="carteirinha.pdf",
+                mime="application/pdf"
+            )
         else:
-            st.error("Preencha todos os campos.")
+            st.error("Preencha todos os campos obrigatórios.")
