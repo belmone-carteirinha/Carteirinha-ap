@@ -106,6 +106,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     return buffer
     
 # Interface de login/cadastro
+# Interface de login/cadastro
 if not st.session_state.autenticado:
     st.title("🔐 Login")
     menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
@@ -114,23 +115,24 @@ if not st.session_state.autenticado:
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
 
-    if st.button("Entrar"):
-        if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-            st.session_state.autenticado = True
-            st.success("Login realizado com sucesso!")
-            st.experimental_rerun()
-        else:
-            st.error("Usuário ou senha incorretos")
-        
+        if st.button("Entrar"):
+            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+                st.session_state.autenticado = True
+                st.success("Login realizado com sucesso!")
+                st.experimental_rerun()
+            else:
+                st.error("Usuário ou senha incorretos")
+
     elif menu == "Cadastrar novo usuário":
         novo_usuario = st.text_input("Novo usuário")
         nova_senha = st.text_input("Nova senha", type="password")
-if st.button("Cadastrar"):
-    if novo_usuario in st.session_state.usuarios:
-        st.warning("Usuário já existe.")
-    elif novo_usuario and nova_senha:
-        st.session_state.usuarios[novo_usuario] = nova_senha
-        salvar_usuarios(st.session_state.usuarios)
-        st.success("Usuário cadastrado com sucesso!")
-    else:
-        st.error("Preencha todos os campos.")
+
+        if st.button("Cadastrar"):
+            if novo_usuario in st.session_state.usuarios:
+                st.warning("Usuário já existe.")
+            elif novo_usuario and nova_senha:
+                st.session_state.usuarios[novo_usuario] = nova_senha
+                salvar_usuarios(st.session_state.usuarios)
+                st.success("Usuário cadastrado com sucesso!")
+            else:
+                st.error("Preencha todos os campos.")
