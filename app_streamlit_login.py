@@ -45,35 +45,35 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     except:
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
-        
-        # Foto do aluno
-if foto:
-    caminho_foto = "foto_temp.jpg"
-    imagem = Image.open(foto)
 
-    # Corrigir rotação automática
-    try:
-        from PIL import ImageOps
-        imagem = ImageOps.exif_transpose(imagem)
-    except Exception:
-        pass
+    # Foto do aluno
+    if foto:
+        caminho_foto = "foto_temp.jpg"
+        imagem = Image.open(foto)
 
-    # Converter mm para pixels (1 mm ≈ 3.78 pixels)
-    largura_px = int(20 * 3.78)
-    altura_px = int(25 * 3.78)
+        # Corrigir rotação automática
+        try:
+            from PIL import ImageOps
+            imagem = ImageOps.exif_transpose(imagem)
+        except Exception:
+            pass
 
-    imagem = imagem.resize((largura_px, altura_px), Image.ANTIALIAS)
-    imagem.save(caminho_foto)
+        # Converter mm para pixels (1 mm ≈ 3.78 pixels)
+        largura_px = int(20 * 3.78)
+        altura_px = int(25 * 3.78)
 
-    c.drawImage(
-        caminho_foto,
-        6 * mm,
-        altura / 35 - -16 * mm,
-        width=20 * mm,
-        height=25 * mm
-    )
-    os.remove(caminho_foto)
-    
+        imagem = imagem.resize((largura_px, altura_px), Image.LANCZOS)
+        imagem.save(caminho_foto)
+
+        c.drawImage(
+            caminho_foto,
+            6 * mm,
+            altura / 35 - -16 * mm,
+            width=20 * mm,
+            height=25 * mm
+        )
+        os.remove(caminho_foto)
+
     # Dados do aluno
     c.setFont("Helvetica-Bold", 9)
     c.setFillColorRGB(0, 0, 0)
@@ -93,13 +93,13 @@ if foto:
 
     c.drawImage(
         qr_path,
-        largura -22 * mm,
+        largura - 22 * mm,
         6 * mm,
         width=17 * mm,
         height=17 * mm
     )
     os.remove(qr_path)
-    
+
     c.save()
     buffer.seek(0)
     return buffer
