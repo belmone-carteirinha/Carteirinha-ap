@@ -14,13 +14,9 @@ def carregar_usuarios():
     if os.path.exists(USUARIOS_PATH):
         with open(USUARIOS_PATH, "r") as f:
             return json.load(f)
-    return {
-        "adriel": {
-            "senha": "adriel1234",
-            "tipo": "admin"
-        }
-    }
-
+    return{
+  "adriel": "adriel12345"
+}
 def salvar_usuarios(usuarios):
     with open(USUARIOS_PATH, "w") as f:
         json.dump(usuarios, f)
