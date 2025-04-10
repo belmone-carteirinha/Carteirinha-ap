@@ -1,10 +1,5 @@
 import json
 import streamlit as st
-# Inicialização segura do estado
-if "autenticado" not in st.session_state:
-    st.session_state.autenticado = False
-if "usuarios" not in st.session_state:
-    st.session_state.usuarios = carregar_usuarios()
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from PIL import Image
@@ -23,6 +18,13 @@ def carregar_usuarios():
 def salvar_usuarios(usuarios):
     with open(USUARIOS_PATH, "w") as f:
         json.dump(usuarios, f)
+
+# Agora sim, depois de definir as funções:
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
+
+if "usuarios" not in st.session_state:
+    st.session_state.usuarios = carregar_usuarios()
 
 # Tamanho padrão da carteirinha (cartão de crédito)
 IDCARD = (85.6 * mm, 54 * mm)
