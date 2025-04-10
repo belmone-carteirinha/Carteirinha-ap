@@ -107,6 +107,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     
 # Interface de login/cadastro
 # Interface de login/cadastro
+# Interface de login/cadastro
 if not st.session_state.autenticado:
     st.title("🔐 Login")
     menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
