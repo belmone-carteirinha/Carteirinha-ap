@@ -45,10 +45,10 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     except:
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
-
-    if foto:
-    caminho_foto = "foto_temp.jpg"
-    imagem = Image.open(foto)
+        
+        if foto:
+            caminho_foto = "foto_temp.jpg"
+            imagem = Image.open(foto)
 
     # Corrigir rotação automática
     try:
