@@ -5,7 +5,7 @@ if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
 if "usuarios" not in st.session_state:
-    st.session_state.usuarios = {"admin": "1234"}
+    st.session_state.usuarios = carregar_usuarios()
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from PIL import Image
