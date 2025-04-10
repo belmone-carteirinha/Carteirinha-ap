@@ -107,10 +107,11 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     
 # Interface de login/cadastro
 if not st.session_state.autenticado:
-    st.title("🔐 Login")
-    menu = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
+    st.title("🔐 Login ou Cadastro")
 
-    if menu == "Login":
+    opcao = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
+
+    if opcao == "Login":
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
         if st.button("Entrar"):
@@ -118,9 +119,9 @@ if not st.session_state.autenticado:
                 st.session_state.autenticado = True
                 st.experimental_rerun()
             else:
-                st.error("Usuário ou senha incorretos")
+                st.error("Usuário ou senha incorretos.")
 
-    elif menu == "Cadastrar novo usuário":
+    elif opcao == "Cadastrar novo usuário":
         novo_usuario = st.text_input("Novo usuário")
         nova_senha = st.text_input("Nova senha", type="password")
         if st.button("Cadastrar"):
@@ -132,3 +133,20 @@ if not st.session_state.autenticado:
                 st.success("Usuário cadastrado com sucesso!")
             else:
                 st.error("Preencha todos os campos.")
+
+# Interface da carteirinha (usuário autenticado)
+else:
+    st.title("🎓 Gerador de Carteirinha Estudantil")
+
+    nome = st.text_input("Nome completo")
+    curso = st.text_input("Curso")
+    matricula = st.text_input("Matrícula")
+    validade = st.date_input("Validade")
+    foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
+
+    if st.button("Gerar Carteirinha"):
+        if nome and curso and matricula and validade and foto:
+            pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto)
+            st.download_button("📥 Baixar Carteirinha", data=pdf, file_name="carteirinha.pdf", mime="application/pdf")
+        else:
+            st.error("Preencha todos os campos.")
