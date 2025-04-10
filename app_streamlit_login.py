@@ -112,8 +112,8 @@ if not st.session_state.autenticado:
     opcao = st.radio("Escolha uma opção:", ["Login", "Cadastrar novo usuário"])
 
     if opcao == "Login":
-    usuario = st.text_input("Usuário")
-    senha = st.text_input("Senha", type="password")
+        usuario = st.text_input("Usuário")
+        senha = st.text_input("Senha", type="password")
     
     if st.button("Entrar"):
         if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
