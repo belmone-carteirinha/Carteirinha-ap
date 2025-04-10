@@ -89,13 +89,13 @@ if not st.session_state.autenticado:
     if opcao == "Login":
         usuario = st.text_input("Usuário", key="login_usuario")
         senha = st.text_input("Senha", type="password", key="login_senha")
-
+        
         if st.button("Entrar"):
-    if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-        st.session_state.autenticado = True
-        st.session_state.pagina = "principal"
-        st.success("Login realizado com sucesso!")
-        st.stop()
+            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+                st.session_state.autenticado = True
+                st.session_state.pagina = "principal"
+                st.success("Login realizado com sucesso!")
+                st.stop()
 
     elif opcao == "Cadastrar":
         novo_usuario = st.text_input("Novo usuário", key="cadastro_usuario")
