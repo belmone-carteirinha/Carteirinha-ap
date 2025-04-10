@@ -14,7 +14,12 @@ def carregar_usuarios():
     if os.path.exists(USUARIOS_PATH):
         with open(USUARIOS_PATH, "r") as f:
             return json.load(f)
-    return {"adriel": "adriel1234"}
+    return {
+        "adriel": {
+            "senha": "adriel1234",
+            "tipo": "admin"
+        }
+    }
 
 def salvar_usuarios(usuarios):
     with open(USUARIOS_PATH, "w") as f:
@@ -89,13 +94,18 @@ if not st.session_state.autenticado:
     if opcao == "Login":
         usuario = st.text_input("Usuário", key="login_usuario")
         senha = st.text_input("Senha", type="password", key="login_senha")
-        
+
         if st.button("Entrar"):
-            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+            usuarios = st.session_state.usuarios
+            if usuario in usuarios and usuarios[usuario]["senha"] == senha:
                 st.session_state.autenticado = True
+                st.session_state.usuario = usuario
+                st.session_state.tipo = usuarios[usuario]["tipo"]
                 st.session_state.pagina = "principal"
                 st.success("Login realizado com sucesso!")
                 st.stop()
+            else:
+                st.error("Usuário ou senha incorretos.")
 
     elif opcao == "Cadastrar":
         novo_usuario = st.text_input("Novo usuário", key="cadastro_usuario")
@@ -104,7 +114,10 @@ if not st.session_state.autenticado:
             if novo_usuario in st.session_state.usuarios:
                 st.warning("Usuário já existe.")
             elif novo_usuario and nova_senha:
-                st.session_state.usuarios[novo_usuario] = nova_senha
+                st.session_state.usuarios[novo_usuario] = {
+                    "senha": nova_senha,
+                    "tipo": "usuario"
+                }
                 salvar_usuarios(st.session_state.usuarios)
                 st.success("Usuário cadastrado com sucesso!")
             else:
@@ -112,6 +125,11 @@ if not st.session_state.autenticado:
 
 elif st.session_state.autenticado and st.session_state.pagina == "principal":
     st.title("🎓 Gerador de Carteirinha Estudantil")
+
+    if st.session_state.tipo == "admin":
+        st.info("Você está logado como administrador.")
+    else:
+        st.info("Você está logado como usuário comum.")
 
     nome = st.text_input("Nome completo")
     curso = st.text_input("Curso")
