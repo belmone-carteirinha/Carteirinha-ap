@@ -92,11 +92,10 @@ if not st.session_state.autenticado and st.session_state.pagina == "login":
     
     if st.button("Entrar"):
         if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-            st.session_state.autenticado = True
-            st.success("Login realizado com sucesso!")
-            st.stop()  # Interrompe a execução aqui e recarrega naturalmente o app
-        else:
-            st.error("Usuário ou senha incorretos.")
+    st.session_state.autenticado = True
+    st.session_state.pagina = "principal"
+    st.success("Login realizado com sucesso!")
+    st.experimental_rerun()
     
     elif opcao == "Cadastrar":
         novo_usuario = st.text_input("Novo usuário")
