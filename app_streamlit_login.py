@@ -63,7 +63,7 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     altura_mm = 28
     largura_px = int((largura_mm / 25.4) * dpi)
     altura_px = int((altura_mm / 25.4) * dpi)
-
+    
     imagem = imagem.resize((largura_px, altura_px), Image.LANCZOS)
     imagem.save(caminho_foto, format="JPEG", quality=95)
 
