@@ -120,16 +120,16 @@ if not st.session_state.autenticado:
             st.experimental_rerun()
         else:
             st.error("Usuário ou senha incorretos")
-
-elif menu == "Cadastrar novo usuário":
-    novo_usuario = st.text_input("Novo usuário")
-    nova_senha = st.text_input("Nova senha", type="password")
-    if st.button("Cadastrar"):
-        if novo_usuario in st.session_state.usuarios:
-            st.warning("Usuário já existe.")
-        elif novo_usuario and nova_senha:
-            st.session_state.usuarios[novo_usuario] = nova_senha
-            salvar_usuarios(st.session_state.usuarios)
-            st.success("Usuário cadastrado com sucesso!")
-        else:
-            st.error("Preencha todos os campos.")
+        
+    elif menu == "Cadastrar novo usuário":
+        novo_usuario = st.text_input("Novo usuário")
+        nova_senha = st.text_input("Nova senha", type="password")
+if st.button("Cadastrar"):
+    if novo_usuario in st.session_state.usuarios:
+        st.warning("Usuário já existe.")
+    elif novo_usuario and nova_senha:
+        st.session_state.usuarios[novo_usuario] = nova_senha
+        salvar_usuarios(st.session_state.usuarios)
+        st.success("Usuário cadastrado com sucesso!")
+    else:
+        st.error("Preencha todos os campos.")
