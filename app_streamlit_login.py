@@ -81,26 +81,27 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     return buffer
 
 # Interface principal
-if not st.session_state.autenticado and st.session_state.pagina == "login":
+if not st.session_state.autenticado:
     st.title("🔐 Login")
 
     opcao = st.radio("Escolha uma opção:", ["Login", "Cadastrar"])
 
     if opcao == "Login":
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
-    
-    if st.button("Entrar"):
-        if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-            st.session_state.autenticado = True
-            st.success("Login realizado com sucesso!")
-            st.stop()  # Interrompe a execução aqui e recarrega naturalmente o app
-        else:
-            st.error("Usuário ou senha incorretos.")
+        usuario = st.text_input("Usuário", key="login_usuario")
+        senha = st.text_input("Senha", type="password", key="login_senha")
+
+        if st.button("Entrar"):
+            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+                st.session_state.autenticado = True
+                st.session_state.pagina = "principal"
+                st.success("Login realizado com sucesso!")
+                st.experimental_rerun()
+            else:
+                st.error("Usuário ou senha incorretos.")
 
     elif opcao == "Cadastrar":
-        novo_usuario = st.text_input("Novo usuário")
-        nova_senha = st.text_input("Nova senha", type="password")
+        novo_usuario = st.text_input("Novo usuário", key="cadastro_usuario")
+        nova_senha = st.text_input("Nova senha", type="password", key="cadastro_senha")
         if st.button("Cadastrar"):
             if novo_usuario in st.session_state.usuarios:
                 st.warning("Usuário já existe.")
