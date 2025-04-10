@@ -99,7 +99,7 @@ if foto:
         height=17 * mm
     )
     os.remove(qr_path)
-
+    
     c.save()
     buffer.seek(0)
     return buffer
