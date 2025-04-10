@@ -130,4 +130,4 @@ elif st.session_state.autenticado and st.session_state.pagina == "principal":
     if st.button("Sair"):
         st.session_state.autenticado = False
         st.session_state.pagina = "login"
-        st.experimental_rerun()
+        st.stop()
