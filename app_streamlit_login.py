@@ -118,10 +118,10 @@ if not st.session_state.autenticado:
                 st.experimental_rerun()
             else:
                 st.error("Usuário ou senha incorretos")
-
-    elif menu == "Cadastrar novo usuário":
-    novo_usuario = st.text_input("Novo usuário")
-    nova_senha = st.text_input("Nova senha", type="password")
+            
+        elif menu == "Cadastrar novo usuário":
+            novo_usuario = st.text_input("Novo usuário")
+            nova_senha = st.text_input("Nova senha", type="password")
     if st.button("Cadastrar"):
         if novo_usuario in st.session_state.usuarios:
             st.warning("Usuário já existe.")
