@@ -99,7 +99,7 @@ if not st.session_state.autenticado and st.session_state.pagina == "login":
     else:
         st.error("Usuário ou senha incorretos.")
     
-    elif opcao == "Cadastrar":
+elif opcao == "Cadastrar":
         novo_usuario = st.text_input("Novo usuário")
         nova_senha = st.text_input("Nova senha", type="password")
         if st.button("Cadastrar"):
