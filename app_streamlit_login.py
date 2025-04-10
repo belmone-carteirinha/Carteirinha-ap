@@ -87,15 +87,16 @@ if not st.session_state.autenticado and st.session_state.pagina == "login":
     opcao = st.radio("Escolha uma opção:", ["Login", "Cadastrar"])
 
     if opcao == "Login":
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
-        if st.button("Entrar"):
-            if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
-                st.session_state.autenticado = True
-                st.session_state.pagina = "principal"
-                st.experimental_rerun()
-            else:
-                st.error("Usuário ou senha incorretos.")
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+    
+    if st.button("Entrar"):
+        if usuario in st.session_state.usuarios and st.session_state.usuarios[usuario] == senha:
+            st.session_state.autenticado = True
+            st.success("Login realizado com sucesso!")
+            st.stop()  # Interrompe a execução aqui e recarrega naturalmente o app
+        else:
+            st.error("Usuário ou senha incorretos.")
     
     elif opcao == "Cadastrar":
         novo_usuario = st.text_input("Novo usuário")
