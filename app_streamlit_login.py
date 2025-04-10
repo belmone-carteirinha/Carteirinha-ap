@@ -46,9 +46,10 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
         c.setFillColorRGB(0.8, 1, 0.8)
         c.rect(0, 0, largura, altura, fill=True, stroke=False)
         
-        if foto:
-            caminho_foto = "foto_temp.jpg"
-            imagem = Image.open(foto)
+        # Foto do aluno
+if foto:
+    caminho_foto = "foto_temp.jpg"
+    imagem = Image.open(foto)
 
     # Corrigir rotação automática
     try:
@@ -57,22 +58,19 @@ def gerar_carteirinha(nome, curso, matricula, validade, foto):
     except Exception:
         pass
 
-    # Conversão de mm para pixels (300 DPI)
-    dpi = 300
-    largura_mm = 22
-    altura_mm = 28
-    largura_px = int((largura_mm / 25.4) * dpi)
-    altura_px = int((altura_mm / 25.4) * dpi)
-    
-    imagem = imagem.resize((largura_px, altura_px), Image.LANCZOS)
-    imagem.save(caminho_foto, format="JPEG", quality=95)
+    # Converter mm para pixels (1 mm ≈ 3.78 pixels)
+    largura_px = int(20 * 3.78)
+    altura_px = int(25 * 3.78)
 
-    c.drawInlineImage(
+    imagem = imagem.resize((largura_px, altura_px), Image.ANTIALIAS)
+    imagem.save(caminho_foto)
+
+    c.drawImage(
         caminho_foto,
         6 * mm,
         altura / 35 - -16 * mm,
-        width=largura_mm * mm,
-        height=altura_mm * mm
+        width=20 * mm,
+        height=25 * mm
     )
     os.remove(caminho_foto)
     
