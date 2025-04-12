@@ -167,9 +167,11 @@ if st.session_state.autenticado and st.session_state.pagina == "principal":
     if usuario_logado == "admin":
         st.sidebar.markdown("## Painel do Administrador")
         admin_opcao = st.sidebar.selectbox("Escolha uma opção:", ["Gerar Carteirinha", "Autorizar Cadastros", "Ver cadastros aprovados"])
-        
-        st.subheader("👮 Autorizar Cadastros")
-        pendentes = carregar_pendentes()
+
+        if admin_opcao == "Autorizar Cadastros":
+            st.subheader("👮 Autorizar Cadastros")
+            pendentes = carregar_pendentes()
+
             if pendentes:
                 for usuario, dados in list(pendentes.items()):
                     with st.expander(f"{usuario}"):
