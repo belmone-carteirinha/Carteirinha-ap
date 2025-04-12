@@ -170,9 +170,6 @@ if st.session_state.autenticado and st.session_state.pagina == "principal":
         st.sidebar.markdown("## Painel do Administrador")
         admin_opcao = st.sidebar.selectbox("Escolha uma opção:", ["Gerar Carteirinha", "Autorizar Cadastros", "Ver cadastros aprovados"])
 
-        if admin_opcao == "Gerar Carteirinha":
-            # Coloque aqui o formulário de geração da carteirinha (já existe no código)
-
         elif admin_opcao == "Autorizar Cadastros":
             st.subheader("👮 Autorizar Cadastros")
             pendentes = carregar_pendentes()
