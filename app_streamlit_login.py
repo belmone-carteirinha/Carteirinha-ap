@@ -151,6 +151,21 @@ if not st.session_state.autenticado:
             else:
                 st.error("Preencha todos os campos.")
 
+elif admin_opcao == "Ver cadastros aprovados":
+    st.subheader("📋 Cadastros Aprovados")
+    cadastros = carregar_cadastros()
+
+    if cadastros:
+        import pandas as pd
+        df = pd.DataFrame.from_dict(cadastros, orient="index")
+        st.dataframe(df)
+
+        csv = df.to_csv(index=True).encode('utf-8')
+        st.download_button("📥 Baixar CSV", data=csv, file_name="cadastros_aprovados.csv", mime="text/csv")
+
+    else:
+        st.info("Nenhum cadastro aprovado ainda.")
+
 # -------- Menu lateral e páginas --------
 elif st.session_state.autenticado:
     menu = ["principal"]
