@@ -218,9 +218,3 @@ if st.session_state.autenticado and "admin" in st.session_state.usuarios:
 
         else:
             st.info("Nenhum cadastro aprovado ainda.")
-    
-    elif admin_opcao == "Voltar":
-        # Ação de voltar para outra página ou menu
-        st.session_state.autenticado = False
-        st.session_state.pagina = "login"
-        st.stop()
