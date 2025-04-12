@@ -162,59 +162,51 @@ if not st.session_state.autenticado:
                 st.error("Preencha todos os campos.")
 
 # -------- Menu lateral e páginas --------
-if "autenticado" not in st.session_state:
-    st.session_state.autenticado = False
-if "usuarios" not in st.session_state:
-    st.session_state.usuarios = carregar_usuarios()
+if st.session_state.autenticado and st.session_state.pagina == "principal":
 
-# Definindo as opções para o admin
-if st.session_state.autenticado and "admin" in st.session_state.usuarios:
-    admin_opcao = st.selectbox("Escolha uma opção", [
-        "Autorizar Cadastros",
-        "Ver cadastros aprovados",
-        "Voltar"
-    ])
-    
-    # Ação do admin
-    if admin_opcao == "Autorizar Cadastros":
-        # Código para autorizar cadastros
-        st.subheader("👮 Autorizar Cadastros")
-        pendentes = carregar_pendentes()
-        if pendentes:
-            for usuario, dados in list(pendentes.items()):
-                with st.expander(f"{usuario}"):
-                    st.write(f"Nome: {dados['nome']}")
-                    st.write(f"Curso: {dados['curso']}")
-                    st.write(f"Matrícula: {dados['matricula']}")
-                    col1, col2 = st.columns(2)
-                    if col1.button("✅ Autorizar", key=f"autorizar_{usuario}"):
-                        st.session_state.usuarios[usuario] = dados["senha"]
-                        salvar_usuarios(st.session_state.usuarios)
-                        salvar_cadastro_completo(usuario, dados["nome"], dados["curso"], dados["matricula"])
-                        del pendentes[usuario]
-                        salvar_pendentes(pendentes)
-                        st.success(f"{usuario} autorizado!")
-                        st.rerun()
-                    if col2.button("❌ Rejeitar", key=f"rejeitar_{usuario}"):
-                        del pendentes[usuario]
-                        salvar_pendentes(pendentes)
-                        st.warning(f"{usuario} rejeitado!")
-                        st.rerun()
-        else:
-            st.info("Nenhum cadastro pendente.")
-    
-    elif admin_opcao == "Ver cadastros aprovados":
-        # Código para ver cadastros aprovados
-        st.subheader("📋 Cadastros Aprovados")
-        cadastros = carregar_cadastros()
+    usuario_logado = st.session_state.get("usuario_logado", "")
 
-        if cadastros:
-            import pandas as pd
-            df = pd.DataFrame.from_dict(cadastros, orient="index")
-            st.dataframe(df)
+    if usuario_logado == "admin":
+        st.sidebar.markdown("## Painel do Administrador")
+        admin_opcao = st.sidebar.selectbox("Escolha uma opção:", ["Gerar Carteirinha", "Autorizar Cadastros", "Ver cadastros aprovados"])
 
-            csv = df.to_csv(index=True).encode('utf-8')
-            st.download_button("📥 Baixar CSV", data=csv, file_name="cadastros_aprovados.csv", mime="text/csv")
+        if admin_opcao == "Gerar Carteirinha":
+            # Coloque aqui o formulário de geração da carteirinha (já existe no código)
 
-        else:
-            st.info("Nenhum cadastro aprovado ainda.")
+        elif admin_opcao == "Autorizar Cadastros":
+            st.subheader("👮 Autorizar Cadastros")
+            pendentes = carregar_pendentes()
+            if pendentes:
+                for usuario, dados in list(pendentes.items()):
+                    with st.expander(f"{usuario}"):
+                        st.write(f"Nome: {dados['nome']}")
+                        st.write(f"Curso: {dados['curso']}")
+                        st.write(f"Matrícula: {dados['matricula']}")
+                        col1, col2 = st.columns(2)
+                        if col1.button("✅ Autorizar", key=f"autorizar_{usuario}"):
+                            st.session_state.usuarios[usuario] = dados["senha"]
+                            salvar_usuarios(st.session_state.usuarios)
+                            salvar_cadastro_completo(usuario, dados["nome"], dados["curso"], dados["matricula"])
+                            del pendentes[usuario]
+                            salvar_pendentes(pendentes)
+                            st.success(f"{usuario} autorizado!")
+                            st.rerun()
+                        if col2.button("❌ Rejeitar", key=f"rejeitar_{usuario}"):
+                            del pendentes[usuario]
+                            salvar_pendentes(pendentes)
+                            st.warning(f"{usuario} rejeitado!")
+                            st.rerun()
+            else:
+                st.info("Nenhum cadastro pendente.")
+
+        elif admin_opcao == "Ver cadastros aprovados":
+            st.subheader("✅ Cadastros Aprovados")
+            cadastros = carregar_cadastros()
+            if cadastros:
+                for usuario, dados in cadastros.items():
+                    with st.expander(usuario):
+                        st.write(f"Nome: {dados['nome']}")
+                        st.write(f"Curso: {dados['curso']}")
+                        st.write(f"Matrícula: {dados['matricula']}")
+            else:
+                st.info("Nenhum cadastro aprovado ainda.")
