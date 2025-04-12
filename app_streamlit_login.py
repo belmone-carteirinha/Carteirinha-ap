@@ -167,38 +167,23 @@ elif admin_opcao == "Ver cadastros aprovados":
         st.info("Nenhum cadastro aprovado ainda.")
 
 # -------- Menu lateral e páginas --------
-elif st.session_state.autenticado:
-    menu = ["principal"]
-    if st.session_state.usuario_logado == "admin":
-        menu.append("admin")
-    st.session_state.pagina = st.sidebar.selectbox("Menu", menu)
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
+if "usuarios" not in st.session_state:
+    st.session_state.usuarios = carregar_usuarios()
 
-    if st.session_state.pagina == "principal":
-        st.title("🎓 Gerador de Carteirinha Estudantil")
-
-        nome = st.text_input("Nome completo")
-        curso = st.text_input("Curso")
-        matricula = st.text_input("Matrícula")
-        validade = st.date_input("Validade")
-        foto = st.file_uploader("Foto do aluno", type=["jpg", "jpeg", "png"])
-
-        if st.button("Gerar Carteirinha"):
-            if nome and curso and matricula and validade and foto:
-                pdf = gerar_carteirinha(nome, curso, matricula, validade.strftime("%d/%m/%Y"), foto)
-                st.download_button("📥 Baixar Carteirinha", data=pdf, file_name="carteirinha.pdf", mime="application/pdf")
-            else:
-                st.error("Preencha todos os campos.")
-
-        if st.button("Sair"):
-            st.session_state.autenticado = False
-            st.session_state.pagina = "login"
-            st.session_state.usuario_logado = ""
-            st.rerun()
-
-    elif st.session_state.pagina == "admin":
-        st.title("👮 Painel do Administrador")
-        st.subheader("Autorizar Cadastros Pendentes")
-
+# Definindo as opções para o admin
+if st.session_state.autenticado and "admin" in st.session_state.usuarios:
+    admin_opcao = st.selectbox("Escolha uma opção", [
+        "Autorizar Cadastros",
+        "Ver cadastros aprovados",
+        "Voltar"
+    ])
+    
+    # Ação do admin
+    if admin_opcao == "Autorizar Cadastros":
+        # Código para autorizar cadastros
+        st.subheader("👮 Autorizar Cadastros")
         pendentes = carregar_pendentes()
         if pendentes:
             for usuario, dados in list(pendentes.items()):
@@ -222,3 +207,25 @@ elif st.session_state.autenticado:
                         st.rerun()
         else:
             st.info("Nenhum cadastro pendente.")
+    
+    elif admin_opcao == "Ver cadastros aprovados":
+        # Código para ver cadastros aprovados
+        st.subheader("📋 Cadastros Aprovados")
+        cadastros = carregar_cadastros()
+
+        if cadastros:
+            import pandas as pd
+            df = pd.DataFrame.from_dict(cadastros, orient="index")
+            st.dataframe(df)
+
+            csv = df.to_csv(index=True).encode('utf-8')
+            st.download_button("📥 Baixar CSV", data=csv, file_name="cadastros_aprovados.csv", mime="text/csv")
+
+        else:
+            st.info("Nenhum cadastro aprovado ainda.")
+    
+    elif admin_opcao == "Voltar":
+        # Ação de voltar para outra página ou menu
+        st.session_state.autenticado = False
+        st.session_state.pagina = "login"
+        st.stop()
