@@ -164,8 +164,6 @@ if not st.session_state.autenticado:
 # -------- Menu lateral e páginas --------
 if st.session_state.autenticado and st.session_state.pagina == "principal":
 
-    usuario_logado = st.session_state.get("usuario_logado", "")
-
     if usuario_logado == "admin":
         st.sidebar.markdown("## Painel do Administrador")
         admin_opcao = st.sidebar.selectbox("Escolha uma opção:", ["Gerar Carteirinha", "Autorizar Cadastros", "Ver cadastros aprovados"])
