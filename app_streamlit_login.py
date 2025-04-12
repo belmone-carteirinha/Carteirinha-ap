@@ -6,6 +6,16 @@ from reportlab.lib.units import mm
 from PIL import Image
 import qrcode
 import io
+import os
+import json
+
+CADASTROS_PATH = "cadastros.json"
+
+def carregar_cadastros():
+    if os.path.exists(CADASTROS_PATH):
+        with open(CADASTROS_PATH, "r") as f:
+            return json.load(f)
+    return {}
 
 # Caminhos dos arquivos
 USUARIOS_PATH = "usuarios.json"
